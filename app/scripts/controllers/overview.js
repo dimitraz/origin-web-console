@@ -6,6 +6,7 @@ angular.module('openshiftConsole').controller('OverviewController', [
   '$q',
   '$location',
   '$routeParams',
+  '$uibModal',
   'AlertMessageService',
   'APIService',
   'AppsService',
@@ -39,6 +40,7 @@ function OverviewController($scope,
                             $q,
                             $location,
                             $routeParams,
+                            $uibModal,
                             AlertMessageService,
                             APIService,
                             AppsService,
@@ -1116,8 +1118,23 @@ function OverviewController($scope,
 
   $scope.$on('open-add-client-panel', function(event, item) {
     console.log('>>>>>>', event);
-    console.log('>>>>>>', item
-    );
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'views/modals/confirm.html',
+      controller: 'ConfirmModalController',
+      resolve: {
+        modalConfig: function() {
+          return {
+            title: "Confirm Creation",
+            details: "Problems were detected while checking your application configuration.",
+            okButtonText: "Create Anyway",
+            okButtonClass: "btn-danger",
+            cancelButtonText: "Cancel"
+          };
+        }
+      }
+    });
+
   });
 
 
