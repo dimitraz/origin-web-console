@@ -3,6 +3,7 @@
 (function() {
   angular.module('openshiftConsole').component('serviceInstanceRow', {
     controller: [
+      '$scope',
       '$filter',
       'APIService',
       'AuthorizationService',
@@ -20,7 +21,9 @@
     templateUrl: 'views/overview/_service-instance-row.html'
   });
 
-  function ServiceInstanceRow($filter,
+  function ServiceInstanceRow(
+                              $scope,
+                              $filter,
                               APIService,
                               AuthorizationService,
                               BindingService,
@@ -126,6 +129,13 @@
 
       return truncated;
     };
+
+
+    row.addClient = function(){
+      console.log('>>>>add client click');
+      $scope.$emit('open-add-client-panel', row);
+    };
+
 
     row.deprovision = function() {
       ServiceInstancesService.deprovision(row.apiObject, row.deleteableBindings);

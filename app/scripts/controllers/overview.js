@@ -1113,6 +1113,14 @@ function OverviewController($scope,
     updateFilter();
   });
 
+
+  $scope.$on('open-add-client-panel', function(event, item) {
+    console.log('>>>>>>', event);
+    console.log('>>>>>>', item
+    );
+  });
+
+
   $scope.browseCatalog = function() {
     Navigate.toProjectCatalog($scope.projectName);
   };
@@ -1259,17 +1267,17 @@ function OverviewController($scope,
       Logger.log("deploymentconfigs (subscribe)", overview.deploymentConfigs);
     }));
 
-    watches.push(DataService.watch(replicaSetsVersion, context, function(replicaSetData) {
-      overview.replicaSets = replicaSetData.by('metadata.name');
-      groupReplicaSets();
-      updateServicesForObjects(overview.vanillaReplicaSets);
-      updateServicesForObjects(overview.monopods);
-      updatePodWarnings(overview.vanillaReplicaSets);
-      updateLabelSuggestions(overview.vanillaReplicaSets);
-      groupBindings();
-      updateFilter();
-      Logger.log("replicasets (subscribe)", overview.replicaSets);
-    }));
+    // watches.push(DataService.watch(replicaSetsVersion, context, function(replicaSetData) {
+    //   overview.replicaSets = replicaSetData.by('metadata.name');
+    //   groupReplicaSets();
+    //   updateServicesForObjects(overview.vanillaReplicaSets);
+    //   updateServicesForObjects(overview.monopods);
+    //   updatePodWarnings(overview.vanillaReplicaSets);
+    //   updateLabelSuggestions(overview.vanillaReplicaSets);
+    //   groupBindings();
+    //   updateFilter();
+    //   Logger.log("replicasets (subscribe)", overview.replicaSets);
+    // }));
 
     watches.push(DataService.watch(deploymentsVersion, context, function(deploymentData) {
       deploymentsByUID = deploymentData.by('metadata.uid');
