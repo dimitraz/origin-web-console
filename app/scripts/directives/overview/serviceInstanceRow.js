@@ -10,6 +10,8 @@
       'BindingService',
       'ListRowUtils',
       'ServiceInstancesService',
+      'MobileClientsService',
+      'DataService',
       ServiceInstanceRow
     ],
     controllerAs: 'row',
@@ -28,7 +30,8 @@
                               AuthorizationService,
                               BindingService,
                               ListRowUtils,
-                              ServiceInstancesService) {
+                              ServiceInstancesService,
+                              DataService) {
     var row = this;
     var isBindingFailed = $filter('isBindingFailed');
     var isBindingReady = $filter('isBindingReady');
@@ -42,6 +45,8 @@
     row.serviceBindingsVersion = APIService.getPreferredVersion('servicebindings');
     row.serviceInstancesVersion = APIService.getPreferredVersion('serviceinstances');
 
+    console.log(row.apiObject.metadata.name);
+
     var getServiceClass = function() {
       var serviceClassName = ServiceInstancesService.getServiceClassNameForInstance(row.apiObject);
       return _.get(row, ['state','serviceClasses', serviceClassName]);
@@ -49,6 +54,11 @@
 
     var getServicePlan = function() {
       var servicePlanName = ServiceInstancesService.getServicePlanNameForInstance(row.apiObject);
+      return _.get(row, ['state', 'servicePlans', servicePlanName]);
+    };
+
+    var getServicePlanssss = function() {
+      var servicePlanName = ServiceInstancesService.g .getServicePlanNameForInstance(row.apiObject);
       return _.get(row, ['state', 'servicePlans', servicePlanName]);
     };
 

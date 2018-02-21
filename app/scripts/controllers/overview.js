@@ -1116,8 +1116,13 @@ function OverviewController($scope,
   });
 
 
+  // DataService.list("mobileclients", context, function(clients) {
+  //   console.log("test from overview" + clients);
+  // });
+
   $scope.$on('open-add-client-panel', function(event, item) {
     console.log('>>>>>>', event);
+
 
     var modalInstance = $uibModal.open({
       templateUrl: 'views/modals/confirm.html',
@@ -1242,6 +1247,11 @@ function OverviewController($scope,
                                                            state.imageStreamImageRefByDockerReference,
                                                            context);
     };
+
+    // blah blah
+    DataService.list({group: "mobile.k8s.io", version: "v1alpha1", resource: "mobileclients"}, context, function(clients) {
+      console.log(clients.by("metadata.name"));
+    });
 
     watches.push(DataService.watch(podsVersion, context, function(podsData) {
       overview.pods = podsData.by("metadata.name");
