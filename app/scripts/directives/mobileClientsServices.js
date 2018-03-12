@@ -28,7 +28,16 @@
             ctrl.serviceInstances.push(serviceInstance);
           }
         });
+        ctrl.filteredServices = filterNotExcluded(ctrl.serviceInstances, ctrl.client);
       });
     }
+
+    var filterNotExcluded = function(serviceInstances, mobileClient) {
+      var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
+      return _.filter(serviceInstances, function(serviceInstance) {
+        var serviceName = _.get(serviceInstance, 'metadata.name', '');
+        return !_.includes(excludedServices, serviceName);
+      });
+    };
   }
 })();
