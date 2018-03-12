@@ -1,0 +1,9 @@
+<div class="row" ng-if="($ctrl.serviceInstances | size)">
+  <div class="col-sm-12">
+    <h3>Services</h3>
+    <mobile-client-service 
+      ng-repeat="service in $ctrl.serviceInstances" 
+      service="service">
+    </mobile-client-service>
+  </div>
+</div>
