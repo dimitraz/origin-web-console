@@ -5,6 +5,7 @@
     controller: [
       'APIService',
       'DataService',
+      'MobileServicesService',
       MobileClientServicesController
     ],
     bindings: {
@@ -14,7 +15,7 @@
     templateUrl: 'views/directives/mobile-client-services.html'
   });
 
-  function MobileClientServicesController(APIService, DataService) {
+  function MobileClientServicesController(APIService, DataService, MobileServicesService) {
     var ctrl = this;
     ctrl.serviceInstances = [];
 
@@ -28,16 +29,28 @@
             ctrl.serviceInstances.push(serviceInstance);
           }
         });
-        ctrl.filteredServices = filterNotExcluded(ctrl.serviceInstances, ctrl.client);
+        ctrl.filteredServices = MobileServicesService.filterNotExcluded(ctrl.serviceInstances, ctrl.client);
       });
     }
 
-    var filterNotExcluded = function(serviceInstances, mobileClient) {
-      var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
-      return _.filter(serviceInstances, function(serviceInstance) {
-        var serviceName = _.get(serviceInstance, 'metadata.name', '');
-        return !_.includes(excludedServices, serviceName);
-      });
+    ctrl.$doCheck = function () {
+      if (ctrl.serviceInstances) {
+        ctrl.filteredServices = MobileServicesService.filterNotExcluded(ctrl.serviceInstances, ctrl.client);
+      }
+    };
+
+    ctrl.canAddMobileService = function() {
+      return !MobileServicesService.filterExcluded(ctrl.serviceInstances, ctrl.client).length;
+    };
+
+    ctrl.closeOverlayPanel = function () {
+      _.set(ctrl, 'overlay.panelVisible', false);
+    };
+
+    ctrl.showOverlayPanel = function (panelName, state) {
+      _.set(ctrl, 'overlay.panelVisible', true);
+      _.set(ctrl, 'overlay.panelName', panelName);
+      _.set(ctrl, 'overlay.state', state);
     };
   }
 })();
