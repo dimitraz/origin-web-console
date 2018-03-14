@@ -5891,6 +5891,44 @@ angular.module('openshiftConsoleTemplates', []).run(['$templateCache', function(
   );
 
 
+  $templateCache.put('views/directives/add-mobile-client.html',
+    "<div class=\"panel panel-default\">\n" +
+    "<div class=\"panel-heading\">\n" +
+    "<h3 class=\"panel-title pull-left\">Select Mobile Client to add to this service</h3>\n" +
+    "<button class=\"panel-title btn pull-right\" type=\"button\" ng-click=\"ctrl.onClose()\">\n" +
+    "<span aria-hidden=\"true\" class=\"pficon pficon-close\"></span>\n" +
+    "</button>\n" +
+    "<div class=\"clearfix\"></div>\n" +
+    "</div>\n" +
+    "<div class=\"panel-body\">\n" +
+    "<div class=\"list-pf\">\n" +
+    "<div ng-repeat=\"client in ctrl.clientsWhereExcluded\" class=\"list-pf-item\">\n" +
+    "<div class=\"list-pf-container\" ng-click=\"ctrl.addMobileClient(client)\">\n" +
+    "<div class=\"order-service-details ng-scope\">\n" +
+    "<div class=\"order-service-details-top\">\n" +
+    "<div class=\"service-icon\">\n" +
+    "<span class=\"fa-4x {{client.metadata.annotations.icon}}\"></span>\n" +
+    "</div>\n" +
+    "<div class=\"service-title-area\">\n" +
+    "<div class=\"service-title ng-binding\">\n" +
+    "{{client.spec.name}}\n" +
+    "</div>\n" +
+    "<div class=\"order-service-tags ng-scope\">\n" +
+    "<span class=\"tag ng-binding ng-scope\">\n" +
+    "{{client.spec.clientType}}\n" +
+    "</span>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('views/directives/annotations.html',
     "<p ng-if=\"annotations\" ng-class=\"{'mar-bottom-xl': !expandAnnotations}\">\n" +
     "<a href=\"\" ng-click=\"toggleAnnotations()\">{{expandAnnotations ? 'Hide Annotations' : 'Show Annotations'}}</a>\n" +
@@ -7832,6 +7870,32 @@ angular.module('openshiftConsoleTemplates', []).run(['$templateCache', function(
     "</div>\n" +
     "</div>\n" +
     "</div>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('views/directives/mobile-service-clients.html',
+    "<div class=\"row mobile-clients\">\n" +
+    "<div class=\"col-sm-6\">\n" +
+    "<div class=\"client-title component-label section-label\">Mobile Clients</div>\n" +
+    "<div ng-repeat=\"mobileClient in $ctrl.filteredClients\" class=\"col-sm-12 col-md-6 mobile-client\">\n" +
+    "<span class=\"fa-2x {{mobileClient.metadata.annotations.icon}} client-icon\"></span>\n" +
+    "<div class=\"client-details\">\n" +
+    "<a ng-href=\"{{mobileClient | navigateResourceURL}}\">{{mobileClient.spec.name}}</a>\n" +
+    "<span class=\"fa fa-trash-o action-button exclude\" ng-click=\"$ctrl.excludeClient(mobileClient)\"></span>\n" +
+    "<div class=\"client-type\">{{mobileClient.spec.appIdentifier}}</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "<div class=\"col-xs-12 col-sm-6\">\n" +
+    "<button ng-disabled=\"$ctrl.canAddMobileClient()\" class=\"btn btn-default btn-lg pull-right\" ng-click=\"$ctrl.showOverlayPanel('addMobileClient', {target: $ctrl.serviceInstance})\">Add Client\n" +
+    "</button>\n" +
+    "</div>\n" +
+    "<overlay-panel show-panel=\"$ctrl.overlay.panelVisible\" handle-close=\"$ctrl.closeOverlayPanel\">\n" +
+    "<div ng-if=\"$ctrl.overlay.panelName === 'addMobileClient'\">\n" +
+    "<add-mobile-client service-instance=\"$ctrl.serviceInstance\" project=\"$ctrl.project\" on-close=\"$ctrl.closeOverlayPanel\" mobile-clients=\"$ctrl.mobileClients\"></add-mobile-client>\n" +
+    "</div>\n" +
+    "</overlay-panel>\n" +
     "</div>"
   );
 
@@ -12114,7 +12178,7 @@ angular.module('openshiftConsoleTemplates', []).run(['$templateCache', function(
     "Provisioned Services\n" +
     "</h2>\n" +
     "<div class=\"list-pf\">\n" +
-    "<service-instance-row ng-repeat=\"serviceInstance in overview.filteredServiceInstances track by (serviceInstance | uid)\" api-object=\"serviceInstance\" bindings=\"overview.bindingsByInstanceRef[serviceInstance.metadata.name]\" state=\"overview.state\"></service-instance-row>\n" +
+    "<service-instance-row ng-repeat=\"serviceInstance in overview.filteredServiceInstances track by (serviceInstance | uid)\" api-object=\"serviceInstance\" bindings=\"overview.bindingsByInstanceRef[serviceInstance.metadata.name]\" state=\"overview.state\" mobile-clients=\"overview.mobileClients\"></service-instance-row>\n" +
     "</div>\n" +
     "</div>\n" +
     "</div>\n" +
@@ -12937,11 +13001,18 @@ angular.module('openshiftConsoleTemplates', []).run(['$templateCache', function(
     "<div class=\"col-sm-12\" ng-if=\"row.serviceClass.spec.description\">\n" +
     "<p class=\"service-description\"><truncate-long-text limit=\"500\" content=\"row.serviceClass.spec.description\" use-word-boundary=\"true\" expandable=\"true\" linkify=\"true\">\n" +
     "</truncate-long-text></p>\n" +
+    "</div>\n" +
+    "</div>\n" +
+    "<div class=\"row\">\n" +
+    "<div class=\"col-sm-12\">\n" +
     "<div ng-if=\"row.serviceClass.spec.externalMetadata.documentationUrl || row.serviceClass.spec.externalMetadata.supportUrl\">\n" +
     "<a ng-if=\"row.serviceClass.spec.externalMetadata.documentationUrl\" ng-href=\"{{row.serviceClass.spec.externalMetadata.documentationUrl}}\" target=\"_blank\" class=\"learn-more-link\">View Documentation <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i></a>\n" +
     "<a ng-if=\"row.serviceClass.spec.externalMetadata.supportUrl\" ng-href=\"{{row.serviceClass.spec.externalMetadata.supportUrl}}\" target=\"_blank\" class=\"learn-more-link\">Get Support <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i></a>\n" +
     "</div>\n" +
     "</div>\n" +
+    "</div>\n" +
+    "<div ng-if=\"row.isMobileEnabled && row.hasMobileClients && row.apiObject | isMobileService\">\n" +
+    "<mobile-service-clients ng-if=\"row.apiObject | isServiceInstanceReady\" mobile-clients=\"row.mobileClients\" service-instance=\"row.apiObject\" project=\"row.state.project\"></mobile-service-clients>\n" +
     "</div>\n" +
     "</div>\n" +
     "<div class=\"expanded-section\">\n" +

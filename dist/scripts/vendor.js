@@ -79899,7 +79899,7 @@ label: "Middleware",
 subCategories: [ {
 id: "integration",
 label: "Integration",
-tags: [ "amq", "fuse", "jboss-fuse", "sso" ]
+tags: [ "amq", "fuse", "jboss-fuse", "sso", "3scale" ]
 }, {
 id: "process-automation",
 label: "Process Automation",
@@ -79926,6 +79926,14 @@ id: "pipelines",
 label: "Pipelines",
 tags: [ "pipelines" ],
 icon: "fa fa-clone"
+} ]
+}, {
+id: "virtualization",
+label: "Virtualization",
+subCategories: [ {
+id: "vms",
+label: "Virtual Machines",
+tags: [ "virtualmachine" ]
 } ]
 } ];
 i.set(window, "OPENSHIFT_CONSTANTS.SERVICE_CATALOG_CATEGORIES", a), i.set(window, "OPENSHIFT_CONSTANTS.SAAS_OFFERINGS", o);
@@ -81520,7 +81528,7 @@ e.setKeywordFilter(n.searchText);
 title: "No results match.",
 info: "The active filters are hiding all catalog items.",
 helpLink: {
-urlLabel: "Clear Filters",
+urlLabel: "Clear All Filters",
 urlAction: this.clearAppliedFilters
 }
 }, this.ctrl.noItemsConfig = {
