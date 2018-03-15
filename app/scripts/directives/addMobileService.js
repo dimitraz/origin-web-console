@@ -25,6 +25,10 @@
       ctrl.filteredServices = MobileServicesService.filterExcluded(ctrl.mobileServices, ctrl.client);
     };
 
+    ctrl.$doCheck = function () {
+      ctrl.filteredServices = MobileServicesService.filterExcluded(ctrl.mobileServices, ctrl.client);
+    };
+
     // add a service to the client
     ctrl.addService = function (serviceInstance) {
       var clientName = _.get(ctrl.client, 'spec.name');

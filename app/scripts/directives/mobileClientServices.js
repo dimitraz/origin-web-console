@@ -3,6 +3,7 @@
 (function () {
   angular.module('openshiftConsole').component('mobileClientServices', {
     controller: [
+      '$filter',
       'APIService',
       'DataService',
       'MobileServicesService',
@@ -15,18 +16,21 @@
     templateUrl: 'views/directives/mobile-client-services.html'
   });
 
-  function MobileClientServicesController(APIService, DataService, MobileServicesService) {
+  function MobileClientServicesController($filter, APIService, DataService, MobileServicesService) {
     var ctrl = this;
     ctrl.serviceInstances = [];
 
     ctrl.$onInit = function () {
       var context = { namespace: ctrl.project };
+      var isServiceInstanceReady = $filter('isServiceInstanceReady');
 
       DataService.watch(APIService.getPreferredVersion('serviceinstances'), context, function (serviceInstancesData) {
         var data = serviceInstancesData.by("metadata.name");
         _.each(data, function (serviceInstance) {
-          if (_.get(serviceInstance, 'metadata.labels', {}).mobile === 'enabled') {
-            ctrl.serviceInstances.push(serviceInstance);
+          if (_.get(serviceInstance, 'metadata.labels', {}).mobile === 'enabled' && isServiceInstanceReady(serviceInstance)) {
+            if (!_.includes(ctrl.serviceInstances, serviceInstance)) {
+              ctrl.serviceInstances.push(serviceInstance);
+            }
           }
         });
         ctrl.filteredServices = MobileServicesService.filterNotExcluded(ctrl.serviceInstances, ctrl.client);
