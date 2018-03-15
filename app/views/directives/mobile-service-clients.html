@@ -5,11 +5,8 @@
       <span class="fa-2x {{mobileClient.metadata.annotations.icon}} client-icon"></span>
       <div class="client-details">
         <a ng-href="{{mobileClient | navigateResourceURL}}">{{mobileClient.spec.name}}</a>
+        <span class="fa fa-trash-o action-button exclude" ng-click="$ctrl.excludeClient(mobileClient)"></span>
         <div class="client-type">{{mobileClient.spec.appIdentifier}}</div>
-      </div>
-      <div class="exclude" ng-click="$ctrl.excludeClient(mobileClient)">
-        <span class="pficon-error-circle-o"></span>
-        <span>Exclude Client</span>
       </div>
     </div>
   </div>
