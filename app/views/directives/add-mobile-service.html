@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title pull-left">Select Mobile Service to add to this client</h3>
+    <div class="panel-title overlay-title pull-left">Select Mobile Service to add to this Client</div>
     <button class="panel-title btn pull-right" type="button" ng-click="$ctrl.onClose()">
       <span aria-hidden="true" class="pficon pficon-close"></span>
     </button>
@@ -13,7 +13,13 @@
           <div class="list-pf-container" ng-click="$ctrl.addService(service)">
             <div class="order-service-details ng-scope">
               <div class="order-service-details-top">
-                <div class="service-title-area">
+                <mobile-client-service
+                  service="service"
+                  client="$ctrl.client"
+                  project="$ctrl.project">
+                </mobile-client-service>
+
+                <!-- <div class="service-title-area">
                   <div class="service-title ng-binding">
                     {{ service.metadata.labels.serviceName }}
                   </div>
@@ -22,7 +28,7 @@
                       {{ service.metadata.name }}
                     </span>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

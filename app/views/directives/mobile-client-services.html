@@ -1,5 +1,5 @@
 <div class="row" ng-if="$ctrl.serviceInstances | size">
-  <div class="col-sm-12">
+  <div class="col-sm-12 mobile-service-row">
     <button ng-disabled="$ctrl.canAddMobileService()" class="btn btn-default pull-right"
       ng-click="$ctrl.showOverlayPanel('addMobileService', { target: $ctrl.client })">Add Service
     </button>
@@ -8,6 +8,7 @@
     <mobile-client-service 
       ng-repeat="service in $ctrl.filteredServices" 
       client="$ctrl.client"
+      exclude="true"
       project="$ctrl.project"
       service="service">
     </mobile-client-service>
@@ -15,7 +16,7 @@
 </div>
 
 <overlay-panel show-panel="$ctrl.overlay.panelVisible" handle-close="$ctrl.closeOverlayPanel">  
-  <div ng-if="$ctrl.overlay.panelName === 'addMobileService'">
+  <div ng-if="$ctrl.overlay.panelName === 'addMobileService'" class="add-service">
     <add-mobile-service
       client="$ctrl.client"
       mobile-services="$ctrl.serviceInstances"

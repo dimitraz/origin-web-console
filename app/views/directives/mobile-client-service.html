@@ -7,8 +7,10 @@
     </div>
     <div class="clear"></div>
   </div>
-  <div class="exclude" ng-click="$ctrl.excludeService($ctrl.client)">
+  <div class="exclude" ng-click="$ctrl.excludeService($ctrl.client)" ng-if="$ctrl.exclude">
     <span ng-click="$ctrl.excludeService($ctrl.client)" class="pficon-error-circle-o"></span>
     <span>Exclude Service</span>
   </div>
+
+  <div class="clear"></div>
 </div>

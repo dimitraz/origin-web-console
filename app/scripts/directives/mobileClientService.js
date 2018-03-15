@@ -12,6 +12,7 @@
     ],
     bindings: {
       client: '<',
+      exclude: '<?',
       project: '<',
       service: '<'
     },
