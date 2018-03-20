@@ -162,6 +162,7 @@
             </div>
           </div>
         </div>
+        <!-- <div ng-if="row.isMobileEnabled && row.hasMobileClients && row.apiObject | isMobileService"> -->
         <div ng-if="row.isMobileEnabled && row.hasMobileClients && row.apiObject | isMobileService">
           <mobile-service-clients ng-if="row.apiObject | isServiceInstanceReady"
             mobile-clients="row.mobileClients"

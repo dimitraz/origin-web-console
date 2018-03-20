@@ -38,11 +38,14 @@ angular.module("openshiftConsole")
     };
 
     var removeFromExcluded = function(mobileClient, serviceInstance, context) {
+      var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       var serviceName = _.get(serviceInstance, 'metadata.name', '');
-      _.remove(mobileClient.spec.excludedServices, function(service) {
+      var clientName = _.get(mobileClient, 'metadata.name', '');
+
+      _.remove(excludedServices, function(service) {
         return service === serviceName;
       });
-      return DataService.update(mobileclientVersion, mobileClient.metadata.name, mobileClient, context);
+      return DataService.update(mobileclientVersion, clientName, mobileClient, context);
     };
 
     var excludeClient = function(mobileClient, serviceInstance, context) {

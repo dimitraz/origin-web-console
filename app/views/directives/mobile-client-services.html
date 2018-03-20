@@ -1,4 +1,4 @@
-<div class="row" ng-if="$ctrl.serviceInstances | size">
+<!-- <div class="row" ng-if="$ctrl.serviceInstances | size">
   <div class="col-sm-12 mobile-service-row">
     <button ng-disabled="$ctrl.canAddMobileService()" class="btn btn-default pull-right"
       ng-click="$ctrl.showOverlayPanel('addMobileService', { target: $ctrl.client })">Add Service
@@ -24,4 +24,15 @@
       project="$ctrl.project"></add-mobile-service>
   </div>
 </overlay-panel>
+ -->
 
+<mobile-associations
+  add="$ctrl.add"
+  exclude="$ctrl.exclude"
+  filter-resources="$ctrl.filterResources"
+  filter-excluded="$ctrl.filterExcluded"
+  project="$ctrl.project"
+  resource="$ctrl.client"
+  resources="$ctrl.services"
+  title="$ctrl.title">
+</mobile-associations>

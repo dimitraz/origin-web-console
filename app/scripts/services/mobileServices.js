@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module("openshiftConsole")
-  .factory("MobileServicesService", function(DataService) {
+  .factory("MobileServicesService", function (APIService, CatalogService, DataService) {
 
     var mobileclientVersion = {
       group: "mobile.k8s.io",
@@ -9,7 +9,18 @@ angular.module("openshiftConsole")
       resource: "mobileclients"
     };
 
-    var filterExcluded = function (serviceInstances, mobileClient) {
+    var getIcon = function (serviceInstance) {
+      var serviceName = _.get(serviceInstance, "metadata.labels.serviceName");
+      return CatalogService.getCatalogItems().then(function (catalogServices) {
+        var item = _.find(catalogServices, function (catalogService) {
+          var serviceClassName = _.get(catalogService, 'resource.spec.externalMetadata.serviceName');
+          return serviceClassName === serviceName
+        })
+        return _.get(item, 'resource.spec.externalMetadata.imageUrl');
+      });
+    };
+
+    var filterExcluded = function (mobileClient, serviceInstances) {
       var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       return _.filter(serviceInstances, function (serviceInstance) {
         var serviceName = _.get(serviceInstance, 'metadata.name', '');
@@ -17,7 +28,7 @@ angular.module("openshiftConsole")
       });
     };
 
-    var filterNotExcluded = function (serviceInstances, mobileClient) {
+    var filterNotExcluded = function (mobileClient, serviceInstances) {
       var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       return _.filter(serviceInstances, function (serviceInstance) {
         var serviceName = _.get(serviceInstance, 'metadata.name', '');
@@ -25,7 +36,7 @@ angular.module("openshiftConsole")
       });
     };
 
-    var removeFromExcluded = function(mobileClient, serviceInstance, context) {
+    var removeFromExcluded = function (mobileClient, serviceInstance, context) {
       var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       var clientName = _.get(mobileClient, 'spec.name');
       var serviceName = _.get(serviceInstance, 'metadata.name');
@@ -41,7 +52,7 @@ angular.module("openshiftConsole")
       var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       var clientName = _.get(mobileClient, 'spec.name');
       var serviceName = _.get(serviceInstance, 'metadata.name');
-      
+
       excludedServices.push(_.get(serviceInstance, 'metadata.name'));
       _.set(mobileClient, 'spec.excludedServices', excludedServices);
 
@@ -49,6 +60,7 @@ angular.module("openshiftConsole")
     };
 
     return {
+      getIcon: getIcon,
       filterExcluded: filterExcluded,
       filterNotExcluded: filterNotExcluded,
       removeFromExcluded: removeFromExcluded,
