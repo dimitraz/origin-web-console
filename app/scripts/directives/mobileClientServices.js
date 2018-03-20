@@ -21,21 +21,25 @@
     var ctrl = this;
     var context = { namespace: ctrl.project };
     var getErrorDetails = $filter('getErrorDetails');
+    var isServiceInstanceReady = $filter('isServiceInstanceReady');
+    var isMobileService = $filter('isMobileService');
     ctrl.title = "Mobile Services";
-    ctrl.services = [];
 
     ctrl.$onInit = function () {
       DataService.watch(APIService.getPreferredVersion('serviceinstances'), context, function (serviceInstancesData) {
         var data = serviceInstancesData.by("metadata.name");
-        _.each(data, function (serviceInstance) {
-          if (_.get(serviceInstance, 'metadata.labels', {}).mobile === 'enabled') {
+
+        ctrl.services = _.filter(data, function (serviceInstance) {
+          return isMobileService(serviceInstance) && isServiceInstanceReady(serviceInstance);
+        });
+
+        _.each(ctrl.services, function (serviceInstance) {
+          if (!serviceInstance.resourceData) {
             MobileServicesService.getIcon(serviceInstance).then(function (icon) {
               serviceInstance.resourceData = {};
               serviceInstance.resourceData.imageUrl = icon;
               serviceInstance.resourceData.name = _.get(serviceInstance, 'metadata.labels.serviceName');
               serviceInstance.resourceData.id = _.get(serviceInstance, 'metadata.name');
-
-              ctrl.services.push(serviceInstance);
             });
           }
         });
@@ -88,7 +92,7 @@
       return MobileServicesService.filterExcluded(mobileClient, serviceInstances);
     }
 
-    ctrl.canAddService = function(mobileClient, serviceInstances) {
+    ctrl.canAddService = function (mobileClient, serviceInstances) {
       return _.isEmpty(MobileServicesService.filterExcluded(mobileClient, serviceInstances));
     };
   }

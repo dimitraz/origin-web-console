@@ -36,7 +36,7 @@ angular.module("openshiftConsole")
     };
 
     var removeFromExcluded = function (mobileClient, serviceInstance, context) {
-      var excludedServices = _.get(mobileClient, 'spec.excludedServices');
+      var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       var clientName = _.get(mobileClient, 'spec.name');
       var serviceName = _.get(serviceInstance, 'metadata.name');
 
@@ -48,7 +48,7 @@ angular.module("openshiftConsole")
     };
 
     var excludeService = function (mobileClient, serviceInstance, context) {
-      var excludedServices = _.get(mobileClient, 'spec.excludedServices');
+      var excludedServices = _.get(mobileClient, 'spec.excludedServices') || [];
       var clientName = _.get(mobileClient, 'spec.name');
       var serviceName = _.get(serviceInstance, 'metadata.name');
 
