@@ -13,7 +13,7 @@
           <div class="order-service-details ng-scope">
             <div class="order-service-details-top">
               <div class="service-icon">
-                <img ng-if="resource.resourceData.imageUrl" class="resource-image pull-left" ng-src="resource.resourceData.imageUrl">
+                <img ng-if="resource.resourceData.imageUrl" class="modal-resource-image pull-left" ng-src="{{ resource.resourceData.imageUrl }}" />
                 <span ng-if="resource.resourceData.icon" class="resource-icon fa-4x {{ resource.resourceData.icon }} pull-left"></span>
               </div>
               <div class="service-title-area">

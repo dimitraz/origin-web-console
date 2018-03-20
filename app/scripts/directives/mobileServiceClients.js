@@ -25,10 +25,6 @@
     var getErrorDetails = $filter('getErrorDetails');
     ctrl.title = "Mobile Clients";
 
-    ctrl.$doCheck = function() {
-      ctrl.filteredClients = MobileClientsService.filterNotExcluded(ctrl.serviceInstance, ctrl.mobileClients);
-    };
-
     ctrl.excludeClient = function(mobileClient) {
       var clientName = _.get(mobileClient, 'spec.name');
       var serviceName = _.get(ctrl.serviceInstance, 'metadata.name');
