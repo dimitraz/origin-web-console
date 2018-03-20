@@ -80,12 +80,16 @@
         });
     }
 
-    ctrl.filterResources = function (mobileClient, serviceInstances) {
+    ctrl.filterServices = function (mobileClient, serviceInstances) {
       return MobileServicesService.filterNotExcluded(mobileClient, serviceInstances);
     }
 
     ctrl.filterExcluded = function (mobileClient, serviceInstances) {
       return MobileServicesService.filterExcluded(mobileClient, serviceInstances);
     }
+
+    ctrl.canAddService = function(mobileClient, serviceInstances) {
+      return _.isEmpty(MobileServicesService.filterExcluded(mobileClient, serviceInstances));
+    };
   }
 })();

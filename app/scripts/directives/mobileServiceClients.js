@@ -63,7 +63,7 @@
         });
     }
 
-    ctrl.filterResources = function(serviceInstance, mobileClients) {
+    ctrl.filterClients = function(serviceInstance, mobileClients) {
       return MobileClientsService.filterNotExcluded(serviceInstance, mobileClients);
     }
 
@@ -71,8 +71,8 @@
       return MobileClientsService.filterExcluded(serviceInstance, mobileClients);
     }
 
-    // ctrl.canAddMobileClient = function() {
-    //   return !MobileClientsService.filterExcluded(ctrl.serviceInstance, ctrl.mobileClients).length;
-    // };
+    ctrl.canAddClient = function(serviceInstance, mobileClients) {
+      return _.isEmpty(MobileClientsService.filterExcluded(serviceInstance, mobileClients));
+    };
   }
 })();

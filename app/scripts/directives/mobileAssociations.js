@@ -7,6 +7,7 @@
     ],
     bindings: {
       add: '<',
+      canAdd: '<',
       exclude: '<',
       filterResources: '<',
       filterExcluded: '<',
@@ -23,6 +24,10 @@
 
     ctrl.$doCheck = function () {
       ctrl.filteredResources = ctrl.filterResources(ctrl.resource, ctrl.resources);
+    }
+
+    ctrl.canAddResource = function() {
+        return ctrl.canAdd(ctrl.resource, ctrl.resources);
     }
 
     ctrl.closeOverlayPanel = function () {
