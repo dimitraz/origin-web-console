@@ -8,13 +8,14 @@
         <h3>
           <div class="list-row-longname"><span>{{row.clientType}}</span></div>
           <!--<span class="fa-2x {{row.apiObject.metadata.annotations.icon}}"></span>-->
-          <a ng-href="{{row.apiObject | navigateResourceURL}}"><span ng-bind-html="row.apiObject.spec.name | highlightKeywords : row.state.filterKeywords"></span></a>
-
-
+          <a ng-href="{{row.apiObject | navigateResourceURL}}">
+            <span ng-bind-html="row.apiObject.spec.name | highlightKeywords : row.state.filterKeywords"></span>
+          </a>
           <div class="list-row-longname">{{row.bundleDisplay}}</div>
         </h3>
       </div>
     </div>
+    <span class="pficon-info icon" ng-if="!row.alertDismissed && (row.servicesNotBoundCount > 0) && !row.expanded"></span>
     <div class="list-pf-actions">
       <div class="dropdown-kebab-pf" uib-dropdown ng-if="row.actionsDropdownVisible()">
         <button uib-dropdown-toggle class="btn btn-link dropdown-toggle">
@@ -56,8 +57,15 @@
                 <span class="pficon pficon-close"></span>
               </button>
               <span class="pficon pficon-info"></span>
-              {{row.servicesNotBoundCount}} mobile services are not bound to this client. 
+              {{row.servicesNotBoundCount}} mobile services are not bound to this client.
               <a href="" ng-click="row.navigateToMobileServices()">Bind them to use with this client.</a>
+            </div>
+            <div>
+              <div class="component-label section-label">Mobile Services</div>
+              <div class="services-chart">
+                  <pf-donut-chart config="row.config" data="row.data" chart-height="row.chartHeight"></pf-donut-chart>
+              </div>
+              <a href="" ng-click="row.navigateToMobileServices()">View All Mobile Services</a>
             </div>
           </div>
           <div class="col-md-4">

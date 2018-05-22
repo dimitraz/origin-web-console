@@ -30,7 +30,20 @@
     var isServiceInstanceReady = $filter('isServiceInstanceReady');
     var isMobileService = $filter('isMobileService');
     var watches = [];
+    var boundServices = 'Bound Services';
+    var unboundServices = 'Unbound Services';
     row.installType = '';
+    row.config = {
+      'chartId': 'services-info',
+      'legend': {
+        'show': true,
+        'position': 'right'
+      },
+      colors: {}
+    };
+    row.config.colors[boundServices] = $.pfPaletteColors.blue;
+    row.config.colors[unboundServices] = $.pfPaletteColors.orange;
+    row.chartHeight = 80;
 
     _.extend(row, ListRowUtils.ui);
 
@@ -47,6 +60,11 @@
     row.updateServicesInfo = function() {
       if (row.services) {
         row.servicesNotBoundCount = row.services.length - row.bindings.length;
+
+        row.data = [
+          [boundServices, row.bindings.length],
+          [unboundServices, row.servicesNotBoundCount]
+        ];
       }
     };
 
@@ -96,7 +114,6 @@
         }));
       }
     };
-
 
     row.mobileclientVersion = {
       group: "mobile.k8s.io",
