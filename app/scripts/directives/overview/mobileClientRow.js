@@ -47,6 +47,26 @@
     row.updateServicesInfo = function() {
       if (row.services) {
         row.servicesNotBoundCount = row.services.length - row.bindings.length;
+        var boundServices = 'Bound Services';
+        var unboundServices = 'Unbound Services';
+
+        row.config = {
+          'chartId': 'services-info',
+          'legend': {
+            'show': true,
+            'position': 'right'
+          },
+          colors: {}
+        };
+
+        row.config.colors[boundServices] = '#47b0d6';
+        row.config.colors[unboundServices] = '#e6792c';
+        row.chartHeight = 80;
+
+        row.data = [
+          [boundServices, row.bindings.length],
+          [unboundServices, row.servicesNotBoundCount]
+        ];
       }
     };
 
@@ -96,7 +116,6 @@
         }));
       }
     };
-
 
     row.mobileclientVersion = {
       group: "mobile.k8s.io",
