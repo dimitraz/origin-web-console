@@ -30,7 +30,20 @@
     var isServiceInstanceReady = $filter('isServiceInstanceReady');
     var isMobileService = $filter('isMobileService');
     var watches = [];
+    var boundServices = 'Bound Services';
+    var unboundServices = 'Unbound Services';
     row.installType = '';
+    row.config = {
+      'chartId': 'services-info',
+      'legend': {
+        'show': true,
+        'position': 'right'
+      },
+      colors: {}
+    };
+    row.config.colors[boundServices] = $.pfPaletteColors.blue;
+    row.config.colors[unboundServices] = $.pfPaletteColors.orange;
+    row.chartHeight = 80;
 
     _.extend(row, ListRowUtils.ui);
 
@@ -47,21 +60,6 @@
     row.updateServicesInfo = function() {
       if (row.services) {
         row.servicesNotBoundCount = row.services.length - row.bindings.length;
-        var boundServices = 'Bound Services';
-        var unboundServices = 'Unbound Services';
-
-        row.config = {
-          'chartId': 'services-info',
-          'legend': {
-            'show': true,
-            'position': 'right'
-          },
-          colors: {}
-        };
-
-        row.config.colors[boundServices] = '#47b0d6';
-        row.config.colors[unboundServices] = '#e6792c';
-        row.chartHeight = 80;
 
         row.data = [
           [boundServices, row.bindings.length],
