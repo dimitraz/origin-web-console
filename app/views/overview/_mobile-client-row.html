@@ -58,7 +58,7 @@
               </button>
               <span class="pficon pficon-info"></span>
               {{row.servicesNotBoundCount}} mobile services are not bound to this client.
-              <a href="" ng-click="row.navigateToMobileServices()">Bind them to use with this client.</a>
+              <a href="" ng-href="{{ row.navigateToMobileServices() }}">Bind them to use with this client.</a>
             </div>
             <div>
               <div class="component-label section-label">Mobile Services</div>
@@ -72,10 +72,39 @@
             <mobile-client-config mobile-client="row.apiObject"></mobile-client-config>
           </div>
         </div>
-      </div>
-      <div ng-if="loading">
-        Loading...
+        <div ng-if="(row.builds | size)">
+          <div class="component-label section-label">Mobile Builds</div>
+          <div ng-repeat="build in (row.builds | limitTo: 5) track by (build | uid)" class="mobile-builds">
+            <div class="row">
+              <div class="col-md-6">
+                <h3>
+                  <a ng-href="{{build | configURLForResource}}">{{build | buildConfigForBuild}}</a>
+                </h3>
+              </div>
+              <div class="col-md-6">
+                <span class="status-icon" ng-class="build.status.phase">
+                  <span ng-switch="build.status.phase" class="hide-ng-leave">
+                    <span ng-switch-when="Complete" aria-hidden="true">
+                      <i class="fa fa-check-circle fa-fw"></i>
+                    </span>
+                    <span ng-switch-when="Failed" aria-hidden="true">
+                      <i class="fa fa-times-circle fa-fw"></i>
+                    </span>
+                    <span ng-switch-default>
+                      <status-icon status="build.status.phase"></status-icon>
+                    </span>
+                  </span>
+                </span>
+                <a ng-href="{{build | navigateResourceURL}}">Build #{{build | annotation : 'buildNumber'}}</a>
+                <span am-time-ago="build.metadata.creationTimestamp" class="build-timestamp"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div ng-if="loading">
+          Loading...
+        </div>
       </div>
     </div>
   </div>
-</div>

@@ -8,6 +8,7 @@
       '$routeParams',
       'APIService',
       'AuthorizationService',
+      'BuildsService',
       'DataService',
       'ListRowUtils',
       'Navigate',
@@ -22,11 +23,12 @@
     templateUrl: 'views/overview/_mobile-client-row.html'
   });
 
-  function MobileAppRow($filter, $location, $routeParams, APIService, AuthorizationService, DataService, ListRowUtils, Navigate, ServiceInstancesService) {
+  function MobileAppRow($filter, $location, $routeParams, APIService, AuthorizationService, BuildsService, DataService, ListRowUtils, Navigate, ServiceInstancesService) {
     var row = this;
     var serviceInstancesVersion = APIService.getPreferredVersion('serviceinstances');
     var serviceClassesVersion = APIService.getPreferredVersion('clusterserviceclasses');
     var serviceBindingsVersion = APIService.getPreferredVersion('servicebindings');
+    var buildsVersion = APIService.getPreferredVersion('builds');
     var isServiceInstanceReady = $filter('isServiceInstanceReady');
     var isMobileService = $filter('isMobileService');
     var watches = [];
@@ -54,7 +56,13 @@
       var opts = {
         tab: "mobileServices"
       };
-      $location.url(Navigate.resourceURL(resource, kind, namespace, null, opts));
+      return Navigate.resourceURL(resource, kind, namespace, null, opts);
+    }
+
+    row.navigateToBuild = function(build) {
+      var resource = _.get(build, 'metadata.labels.buildconfig');
+      var namespace = _.get(build, 'metadata.namespace');
+      return Navigate.resourceURL(resource, BUILD_CONFIG_KIND, namespace);
     }
 
     row.updateServicesInfo = function() {
@@ -111,6 +119,17 @@
             return _.get(binding.metadata.annotations, 'binding.aerogear.org/consumer') === _.get(row, 'apiObject.metadata.name');
           });
           row.updateServicesInfo();
+        }));
+      }
+
+      if (apiObjectChanges && !row.buildsWatched) {
+        row.buildsWatched = true;
+        watches.push(DataService.watch(buildsVersion, row.context, function(buildsData) {    
+          // Filter builds by mobile client id
+          var builds = _.filter(buildsData.by('metadata.name'), function(build) {
+            return _.get(build, 'metadata.labels.mobile-client-id') === _.get(row, 'apiObject.metadata.name');
+          });
+          row.builds = BuildsService.sortBuilds(builds, true);
         }));
       }
     };
