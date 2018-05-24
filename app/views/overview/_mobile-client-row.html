@@ -15,6 +15,7 @@
         </h3>
       </div>
     </div>
+    <span class="pficon-info icon" ng-if="!row.alertDismissed && (row.servicesNotBoundCount > 0) && !row.expanded"></span>
     <div class="list-pf-actions">
       <div class="dropdown-kebab-pf" uib-dropdown ng-if="row.actionsDropdownVisible()">
         <button uib-dropdown-toggle class="btn btn-link dropdown-toggle">
