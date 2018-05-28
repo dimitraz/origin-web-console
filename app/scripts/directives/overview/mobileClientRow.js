@@ -49,12 +49,12 @@
 
     _.extend(row, ListRowUtils.ui);
 
-    row.navigateToMobileServices = function() {
+    row.navigateToMobileTab = function(tab) {
       var resource = _.get(row, 'apiObject.metadata.name');
       var kind = _.get(row, 'apiObject.kind');
       var namespace = _.get(row, 'apiObject.metadata.namespace');
       var opts = {
-        tab: "mobileServices"
+        tab: tab
       };
       return Navigate.resourceURL(resource, kind, namespace, null, opts);
     }

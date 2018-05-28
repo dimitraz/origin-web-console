@@ -58,14 +58,14 @@
               </button>
               <span class="pficon pficon-info"></span>
               {{row.servicesNotBoundCount}} mobile services are not bound to this client.
-              <a href="" ng-href="{{ row.navigateToMobileServices() }}">Bind them to use with this client.</a>
+              <a href="" ng-href="{{ row.navigateToMobileTab('mobileServices') }}">Bind them to use with this client.</a>
             </div>
             <div>
               <div class="component-label section-label">Mobile Services</div>
               <div class="services-chart">
                   <pf-donut-chart config="row.config" data="row.data" chart-height="row.chartHeight"></pf-donut-chart>
               </div>
-              <a href="" ng-click="row.navigateToMobileServices()">View All Mobile Services</a>
+              <a href="" ng-href="{{ row.navigateToMobileTab('mobileServices') }}">View All Mobile Services</a>
             </div>
           </div>
           <div class="col-md-4">
@@ -100,6 +100,7 @@
               </div>
             </div>
           </div>
+          <a href="" ng-href="{{ row.navigateToMobileTab('builds') }}">View All Mobile Builds</a>
         </div>
         </div>
         <div ng-if="loading">
